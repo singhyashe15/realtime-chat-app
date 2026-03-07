@@ -1,17 +1,16 @@
-import { Avatar, Box, Button, Flex, Spinner, Text, VStack } from "@chakra-ui/react"
+import { Avatar, Button, Flex, Spinner, Text, VStack } from "@chakra-ui/react"
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api/axios";
 
 const ArchiveParticipants = () => {
   const [participants, setParticipants] = useState([]);
   const [loading , setLoading] = useState(false);
-  const server_url = import.meta.env.VITE_SERVER_URL;
 
   useEffect(() => {
     const fetchArchiveParticipants = async () => {
       setLoading(true);
-      const res = await axios.get(`${server_url}/api/archive-participants`, {
+      const res = await api.get(`/api/archive-participants`, {
         withCredentials: true
       });
       setParticipants(() => res.data)
@@ -21,7 +20,7 @@ const ArchiveParticipants = () => {
   }, [])
 
   const unArchived = async(id) => {
-    const res = await axios.get(`${server_url}/api/unarchived?id=${id}` , {
+    const res = await api.get(`/api/unarchived?id=${id}` , {
       withCredentials: true
     })
     if(res.status === 200){

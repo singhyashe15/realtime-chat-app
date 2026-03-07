@@ -1,10 +1,10 @@
 import { Avatar, Box, Flex, Spinner, Text, VStack } from "@chakra-ui/react"
-import axios from "axios";
 import { Users } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { addGroup } from "../store/slice";
 import { Link } from "react-router-dom";
+import api from "../api/axios";
 
 const GroupsParticipants = () => {
   const [groups, setGroups] = useState([]);
@@ -14,8 +14,7 @@ const GroupsParticipants = () => {
   useEffect(() => {
     const fetchGroup = async () => {
       setLoading(true);
-      const server_url = import.meta.env.VITE_SERVER_URL;
-      const res = await axios.get(`${server_url}/api/fetchGroups`, {
+      const res = await api.get(`/api/fetchGroups`, {
         withCredentials: true
       });
       console.log(res.data);

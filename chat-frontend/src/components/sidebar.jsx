@@ -1,13 +1,13 @@
 import { Avatar, Box, Button, Checkbox, CheckboxGroup, Divider, Flex, HStack, Icon, Input, InputGroup, InputLeftElement, Menu, MenuButton, MenuItem, MenuList, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, Stack, Text, useDisclosure } from "@chakra-ui/react";
 import { Menu as MenuIcon, SearchIcon, MessageSquarePlus, Users, LogOut } from 'lucide-react';
 import { useEffect, useState } from "react";
-import axios from "axios";
 import ArchiveParticipants from "./archiveParticipants";
 import FavouritesParticipants from "./favouritesParticipants";
 import GroupsParticipants from "./groupsParticipants";
 import AllParticipants from "./allParticipants";
 import { addParticipant } from "../store/slice";
 import { useDispatch } from "react-redux";
+import api from "../api/axios";
 
 const list = [
   { index: 0, value: "All" }, { index: 1, value: "Archive" }, { index: 2, value: "Favourites" }, { index: 3, value: "Groups" }
@@ -29,11 +29,9 @@ const Sidebar = () => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const server_url = import.meta.env.VITE_SERVER_URL;
-      const res = await axios.get(`${server_url}/api/search-user?name=${searchByName}`, {
+      const res = await api.get(`/api/search-user?name=${searchByName}`, {
         withCredentials: true
       });
-      console.log(res);
       setSearchUserList(() => res.data);
     }
 
@@ -41,10 +39,9 @@ const Sidebar = () => {
   }, [searchByName])
 
   useEffect(() => {
-    const server_url = import.meta.env.VITE_SERVER_URL;
     const fetchParticipants = async () => {
       setLoading(true);
-      const res = await axios.get(`${server_url}/api/all-participants`, {
+      const res = await api.get(`/api/all-participants`, {
         withCredentials: true
       });
       console.log(res);
@@ -85,9 +82,7 @@ const Sidebar = () => {
   }
 
   const submitGroupInfo = async () => {
-    const server_url = import.meta.env.VITE_SERVER_URL;
-    console.log(groupInfo);
-    const res = await axios.post(`${server_url}/api/add-group`, groupInfo, {
+    const res = await api.post(`/api/add-group`, groupInfo, {
       withCredentials: true
     });
     console.log(res);

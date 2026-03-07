@@ -1,17 +1,16 @@
 import { Avatar, Box, Flex, Spinner, Text, VStack } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import api from "../api/axios";
 
 const FavouritesParticipants = () => {
   const [participants, setParticipants] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const server_url = import.meta.env.VITE_SERVER_URL;
     const fetchFavouritesParticipants = async () => {
       setLoading(true);
-      const res = await axios.get(`${server_url}/api/favourites-participants`, {
+      const res = await api.get(`/api/favourites-participants`, {
         withCredentials: true
       });
       setParticipants(() => res.data)

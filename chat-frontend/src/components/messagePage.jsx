@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import { connectWebSocket, disconnectWebSocket, getClient } from "./webSocketConnection";
 import uploadFile from "../helpers/uploadFile";
 import { useParams, useNavigate } from "react-router-dom";
-import axios from "axios";
 import Message from "./message";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
+import api from "../api/axios";
 
 export default function MessagePage() {
   const { opponentId } = useParams();
@@ -25,9 +25,8 @@ export default function MessagePage() {
   useEffect(() => {
 
     const fetchConversation = async () => {
-      const server_url = import.meta.env.VITE_SERVER_URL;
-      const res = await axios.get(
-        `${server_url}/api/conversation?senderId=${userInfo.id}&receiverId=${opponentId}`,
+      const res = await api.get(
+        `/api/conversation?senderId=${userInfo.id}&receiverId=${opponentId}`,
         { withCredentials: true }
       );
       console.log(res);
@@ -100,26 +99,22 @@ export default function MessagePage() {
   }
 
   const handleFavourites = async () => {
-    const server_url = import.meta.env.VITE_SERVER_URL;
-    const res = await axios.post(`${server_url}/api/add-favourites-participants?id=${opponentId}`, null, {
+    const res = await api.post(`/api/add-favourites-participants?id=${opponentId}`, null, {
       withCredentials: true
     });
     console.log(res);
   }
 
   const handleArchives = async () => {
-    const server_url = import.meta.env.VITE_SERVER_URL;
-    const res = await axios.post(`${server_url}/api/add-archive-participants?id=${opponentId}`, null, {
+    const res = await api.post(`/api/add-archive-participants?id=${opponentId}`, null, {
       withCredentials: true
     });
     console.log(res);
   }
 
   const handleUploadImage = async (e) => {
-    console.log(e);
     const file = e.target.files[0];
     const res = await uploadFile(file, "image");
-    console.log(res);
 
     setMessageInfo((prev) => {
       return {
@@ -143,11 +138,9 @@ export default function MessagePage() {
   }
 
   const handleUploadVideo = async (e) => {
-    console.log(e);
     const file = e.target.files[0];
     const res = await uploadFile(file, "video");
-    console.log(res);
-
+   
     setMessageInfo((prev) => {
       return {
         ...prev,
@@ -170,8 +163,7 @@ export default function MessagePage() {
   }
 
   const deleteAllMessage = async () => {
-    const server_url = import.meta.env.VITE_SERVER_URL;
-    const res = await axios.delete(`${server_url}/api/delete-all-messages?id=${opponentId}`, {
+    const res = await api.delete(`/api/delete-all-messages?id=${opponentId}`, {
       withCredentials: true
     })
     toast.success(res.data)
@@ -183,8 +175,7 @@ export default function MessagePage() {
   }
 
   const deleteIndividualMessage = async (msgId) => {
-    const server_url = import.meta.env.VITE_SERVER_URL;
-    const res = await axios.delete(`${server_url}/api/delete-individual-message?messageId=${msgId}`, {
+    const res = await api.delete(`/api/delete-individual-message?messageId=${msgId}`, {
       withCredentials: true
     })
     if (res.status === 200) {

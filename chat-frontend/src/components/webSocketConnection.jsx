@@ -4,8 +4,9 @@ import { Client } from '@stomp/stompjs';
 let stompClient = null;
 
 export const connectWebSocket = (onConnect) => {
+  const server_url = import.meta.env.VITE_SERVER_URL;
   stompClient = new Client({
-    webSocketFactory: () => new SockJS('http://localhost:8080/ws'),
+    webSocketFactory: () => new SockJS(`${server_url}/ws`),
     reconnectDelay: 5000,
     // debug : () => {}
   })

@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import GroupMessage from "./groupMessage";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
-import axios from "axios";
+import api from "../api/axios";
 
 export default function GroupMessagePage() {
   const { groupId } = useParams();
@@ -25,8 +25,7 @@ export default function GroupMessagePage() {
   useEffect(() => {
 
     const fetchGroupConversation = async () => {
-      const server_url = import.meta.env.VITE_SERVER_URL;
-      const res = await axios.get(`${server_url}/api/group-conversation?groupId=${groupId}`,{
+      const res = await api.get(`/api/group-conversation?groupId=${groupId}`,{
         withCredentials: true
       })
       setSocketMessage(() => res.data)
@@ -96,7 +95,6 @@ export default function GroupMessagePage() {
   }
 
   const handleUploadImage = async (e) => {
-    console.log(e);
     const file = e.target.files[0];
     const res = await uploadFile(file, "image");
 
@@ -123,10 +121,8 @@ export default function GroupMessagePage() {
   }
 
   const handleUploadVideo = async (e) => {
-    console.log(e);
     const file = e.target.files[0];
     const res = await uploadFile(file, "video");
-    console.log(res);
 
     setMessageInfo((prev) => {
       return {
@@ -150,8 +146,7 @@ export default function GroupMessagePage() {
   }
 
   const deleteAllMessage = async () => {
-    const server_url = import.meta.env.VITE_SERVER_URL;
-    const res = await axios.delete(`${server_url}/api/delete-all-group-messages?groupId=${groupId}`, {
+    const res = await api.delete(`/api/delete-all-group-messages?groupId=${groupId}`, {
       withCredentials: true
     })
     toast.success(res.data)
@@ -167,8 +162,7 @@ export default function GroupMessagePage() {
   }
 
   const exitFromGroup = async () => {
-    const server_url = import.meta.env.VITE_SERVER_URL;
-    const res = await axios.put(`${server_url}/api/exit-from-group?groupId=${group.id}`, null, {
+    const res = await api.put(`/api/exit-from-group?groupId=${group.id}`, null, {
       withCredentials: true
     })
     // group?.members?.filter((g) => g?.id != userInfo.id)
