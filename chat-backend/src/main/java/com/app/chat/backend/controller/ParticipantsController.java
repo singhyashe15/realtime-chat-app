@@ -60,14 +60,12 @@ public class ParticipantsController {
 
     @PutMapping("exit-from-group")
     public ResponseEntity<?> exitFromGroup(@RequestParam Long groupId , @AuthenticationPrincipal User user){
-        System.out.println(groupId);
         pService.exitUserFromGroup(groupId , user.getId());
         return ResponseEntity.ok("Removed");
     }
 
     @PostMapping("add-group")
     public ResponseEntity<?> createGroup(@RequestBody GroupDTO groupDTO,@AuthenticationPrincipal User user){
-        System.out.println(groupDTO.getMembers().getFirst());
         pService.createGroup(groupDTO , user.getId());
         return ResponseEntity.ok("group created");
     }

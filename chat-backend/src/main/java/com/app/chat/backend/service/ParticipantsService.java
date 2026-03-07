@@ -58,7 +58,6 @@ public class ParticipantsService {
 
     public List<ConversationUserDTO> allParticipants(Long id) {
         List<User>userList =  userDB.findByIdNotAndNotArchivedBy(id);
-        System.out.println(userList.getLast().getUsername());
         List<ConversationUserDTO> convList = new ArrayList<>();
         for(User user : userList){
             Conversation conv = convDB.findConversationBetweenUsers(id , user.getId());
@@ -176,7 +175,6 @@ public class ParticipantsService {
     public void exitUserFromGroup(Long groupId, Long userId) {
         try{
             GroupParticipant participant = participantRepo.findByIdAndGroupMembersId(groupId, userId);
-            System.out.println(participant.getId());
             participantRepo.deleteById(participant.getId());
         } catch (Exception e) {
             e.printStackTrace();
