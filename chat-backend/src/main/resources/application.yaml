@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: Chat-Backend
+
+  datasource:
+    url: DATABASE_URL
+    username: USERNAME
+    password: PASSWORD
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+      show-sql: true
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.PostgreSQLDialect
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+  data:
+    redis:
+      url: REDIS_URL
+
+SECURITY_KEY: SECURITY_KEY
+FRONTEND_URL: http://localhost:5173
+
+logging:
+    level:
+      org:
+        springframework:
+          messaging: DEBUG
+          web:
+            socket: DEBUG
+
+brevo:
+  api-key: MAIL_API_KEY
+  sender:
+    name: SENDER_NAME
+    email: EMAIL
