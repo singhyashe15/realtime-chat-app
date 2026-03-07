@@ -42,6 +42,8 @@ public class AuthFilter extends OncePerRequestFilter {
             }
         }
 
+
+
         if(jwtToken != null){
             String userName = jwtConfig.getUsernameFromToken(jwtToken);
             if(userName != null && SecurityContextHolder.getContext().getAuthentication() == null){
@@ -52,10 +54,17 @@ public class AuthFilter extends OncePerRequestFilter {
                     UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user , null , null);
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
                 }
+            }else{
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().write("Access Denied");
             }
+        }else{
+            System.out.println("Hel");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Access Denied");
+            return;
         }
-
-
         filterChain.doFilter(request , response);
     }
+
 }
