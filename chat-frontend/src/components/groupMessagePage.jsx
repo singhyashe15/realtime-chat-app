@@ -5,7 +5,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import uploadFile from "../helpers/uploadFile";
 import { useEffect, useState } from "react";
 import GroupMessage from "./groupMessage";
-import { useSelector } from "react-redux";
+import {removeMemberFromGroup} from "../store/slice";
+import { useSelector, useDispatch } from "react-redux";
 import toast from "react-hot-toast";
 import api from "../api/axios";
 
@@ -16,6 +17,7 @@ export default function GroupMessagePage() {
   const [socketMessage, setSocketMessage] = useState([]);
   const [hide, setHide] = useState(true);
   const { onOpen, onClose, isOpen } = useDisclosure();
+  const dispatch = useDispatch();
   const groups = useSelector((state) => state.chat.groupDetails);
   const group = groups?.find(group => group.id === Number(groupId));
 
@@ -165,7 +167,10 @@ export default function GroupMessagePage() {
     const res = await api.put(`/api/exit-from-group?groupId=${group.id}`, null, {
       withCredentials: true
     })
-    // group?.members?.filter((g) => g?.id != userInfo.id)
+    const member = {
+      id : group.id ,userId : userInfo.id
+    }
+    dispatch(removeMemberFromGroup(member));
   }
 
   return (

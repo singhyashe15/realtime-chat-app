@@ -14,9 +14,18 @@ export const groupSlice = createSlice({
     },
     addParticipant : (state , action) => {
       state.participantsDetails = action.payload;
+    },
+    removeMemberFromGroup : (state , action) => {
+      state.groupDetails.map((prev) => {
+        // if(prev?.id === action.payload.id){
+        //   return {
+        //     ...prev , 
+        //   }
+        // }
+      })
     }
   }
 })
 
-export const {addGroup,addParticipant}  = groupSlice.actions;
+export const {addGroup,addParticipant,removeMemberFromGroup}  = groupSlice.actions;
 export default groupSlice.reducer;
