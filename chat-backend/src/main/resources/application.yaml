@@ -17,14 +17,10 @@ spring:
           dialect: ${DIALECT}
 
   rabbitmq:
-    host: ${RABBITMQ_HOST}
-    port: ${RABBITMQ_PORT}
-    username: ${RABBITMQ_USERNAME}
-    password: ${RABBITMQ_PASSWORD}
+    uri: ${MQ_URI}
 
   redis:
-    host: ${REDIS_HOST}
-    port: ${REDIS_PORT}
+    url: ${REDIS_URI}
 
 SECURITY_KEY: ${SECURITY_KEY}
 FRONTEND_URL: ${FRONTEND_URL}
