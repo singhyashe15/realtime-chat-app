@@ -17,7 +17,13 @@ spring:
           dialect: ${DIALECT}
 
   rabbitmq:
-    uri: ${MQ_URI}
+    host: ${RABBIT_HOST}
+    port: ${RABBIT_PORT}
+    username: ${RABBIT_USERNAME}
+    password: ${RABBIT_PASSWORD}
+    virtual-host: ${RABBIT_VIRTUAL_HOST}
+    ssl:
+      enabled: true
 
   redis:
     url: ${REDIS_URI}
