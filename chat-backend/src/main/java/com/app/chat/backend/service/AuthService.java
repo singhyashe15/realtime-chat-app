@@ -54,14 +54,15 @@ public class AuthService {
 
     public UserDTO login(LoginRequestDTO requestDTO, HttpServletResponse response) {
         User authenticatedUser = userDetail.authenticate(requestDTO);
-        System.out.println("Hello user");
         String token = jwtConfig.generateAccessToken(authenticatedUser);
-        Cookie cookie = new Cookie("jwt" , token);
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-        cookie.setMaxAge(24*60*60);
-        response.addCookie(cookie);
-        System.out.println("hello cookie");
+        String cookieValue = "jwt=" + token +
+                "; HttpOnly" +
+                "; Secure" +
+                "; Path=/" +
+                "; Max-Age=" + (24 * 60 * 60) +
+                "; SameSite=None";
+        response.setHeader("Set-Cookie", cookieValue);
+
         return new UserDTO(authenticatedUser.getId(),authenticatedUser.getUsername(),authenticatedUser.getName(),authenticatedUser.getEmailId());
     }
 

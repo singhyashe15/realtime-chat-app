@@ -59,7 +59,6 @@ public class AuthFilter extends OncePerRequestFilter {
                 response.getWriter().write("Access Denied");
             }
         }else{
-            System.out.println("Hel");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Access Denied");
             return;
