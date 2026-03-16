@@ -20,7 +20,7 @@ export default function MessagePage() {
   const navigate = useNavigate();
   const client = getClient();
   const participants = useSelector((state) => state.chat.participantsDetails);
-  const participant = participants?.filter((participant) => participant.id === opponentId)
+  const participant = participants?.filter((participant) => participant.id === Number(opponentId))
 
   useEffect(() => {
 

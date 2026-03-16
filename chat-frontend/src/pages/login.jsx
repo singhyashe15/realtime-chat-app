@@ -32,7 +32,7 @@ export default function Login() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { userName , emailId, password} = client;
-    console.log(client)
+    
     if (!userName || !emailId || !password) {
       return toast.error("Fill all required fields.");
     }
@@ -43,8 +43,7 @@ export default function Login() {
       const res = await axios.post(`${serverUrl}/api/user/login`, client,{
         withCredentials: true
       });
-      console.log(res);
-      
+
       if (res.status !== 200) {
         toast.error("Fault Occurred");
       } else{

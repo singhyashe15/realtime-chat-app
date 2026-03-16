@@ -44,7 +44,7 @@ const Sidebar = () => {
       const res = await api.get(`/api/all-participants`, {
         withCredentials: true
       });
-      console.log(res);
+      
       setParticipants(() => res.data)
       dispatch(addParticipant(res.data))
       setLoading(false);

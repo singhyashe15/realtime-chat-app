@@ -77,8 +77,6 @@ const Register = () => {
 
     try {
       const res = await axios.post(`${serverUrl}/api/user/signup`, client);
-      console.log(res);
-
       if (res.status === 200) {
         toast.success("Registration Successful! Please verify your email.");
         localStorage.setItem("validateUser", JSON.stringify(res.data));
