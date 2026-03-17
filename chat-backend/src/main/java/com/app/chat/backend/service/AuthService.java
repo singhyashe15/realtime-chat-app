@@ -1,11 +1,13 @@
 package com.app.chat.backend.service;
 
+import brevo.ApiException;
 import com.app.chat.backend.config.JwtConfig;
 import com.app.chat.backend.dtos.LoginRequestDTO;
 import com.app.chat.backend.dtos.OtpDTO;
 import com.app.chat.backend.dtos.UserDTO;
 import com.app.chat.backend.dtos.UserRequestDTO;
 import com.app.chat.backend.entity.User;
+import com.app.chat.backend.mailController.MailHandler;
 import com.app.chat.backend.repository.UserRepo;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
@@ -21,16 +23,18 @@ public class AuthService {
     private final CustomUserDetailsService userDetail;
     private final JwtConfig jwtConfig;
     private final RedisService redisService;
+    private final MailHandler mailHandler;
 
-    public AuthService(PasswordEncoder encoder, UserRepo db, CustomUserDetailsService userDetail, JwtConfig jwtConfig, RedisService redisService) {
+    public AuthService(PasswordEncoder encoder, UserRepo db, CustomUserDetailsService userDetail, JwtConfig jwtConfig, RedisService redisService, MailHandler mailHandler) {
         this.encoder = encoder;
         this.db = db;
         this.userDetail = userDetail;
         this.jwtConfig = jwtConfig;
         this.redisService = redisService;
+        this.mailHandler = mailHandler;
     }
 
-    public UserDTO signUp(UserRequestDTO user) {
+    public UserDTO signUp(UserRequestDTO user){
         User isFound = db.findByEmailId(user.getEmailId());
         if(isFound != null){
             throw new RuntimeException("user already exits");
@@ -44,12 +48,24 @@ public class AuthService {
     }
 
     private void generateOtp(UserRequestDTO user) {
-        Random random = new Random();
-        String code =  String.valueOf(random.nextInt(99999 - 10000 + 1) + 10000);
+        try{
+            Random random = new Random();
+            String code =  String.valueOf(random.nextInt(99999 - 10000 + 1) + 10000);
 
-        OtpDTO otp = new OtpDTO( user.getEmailId(), code);
-        // for storing otp in redis dbs
-        redisService.setOtp("otp::" + user.getEmailId(), otp);
+            OtpDTO otp = new OtpDTO( user.getEmailId(), code);
+            // for storing otp in redis dbs
+            redisService.setOtp("otp::" + user.getEmailId(), otp);
+
+            mailHandler.sendOtpNotification(user.getEmailId(),"Otp (One Time Password)", code , user.getUserName());
+        }catch(ApiException exec) {
+            try {
+                throw new ApiException("Mail notification exception");
+            } catch (ApiException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public UserDTO login(LoginRequestDTO requestDTO, HttpServletResponse response) {

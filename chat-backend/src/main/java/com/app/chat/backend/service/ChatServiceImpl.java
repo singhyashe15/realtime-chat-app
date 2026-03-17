@@ -37,6 +37,7 @@ public class ChatServiceImpl implements ChatService{
     @Override
     @RabbitListener(queues = RabbitMQConfig.QUEUE)
     public void sendMessage(ChatMessage message) {
+        Optional<User> sender  = userDB.findById(message.getSenderId());
         if(message.getReceiverId() == null){
             MessageDTO messageDTO = storeGroupMessage(message);
             messagingTemplate.convertAndSend("/topic/messages." + message.getGroupId() , messageDTO);
@@ -44,6 +45,7 @@ public class ChatServiceImpl implements ChatService{
             MessageDTO messageDTO = storePrivateMessage(message);
             Optional<User> userReceiver = userDB.findById(message.getReceiverId());
             messagingTemplate.convertAndSend("/topic/messages." + userReceiver.get().getId(), messageDTO);
+            messagingTemplate.convertAndSend("/topic/messages." + sender.get().getId(), messageDTO);
         }
     }
 
