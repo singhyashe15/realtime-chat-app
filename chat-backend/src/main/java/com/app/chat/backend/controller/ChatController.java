@@ -28,8 +28,6 @@ public class ChatController {
 
     @MessageMapping("/private/chat.{id}")
     public void sendMessage(ChatMessage chatMessage, @DestinationVariable("id") String conversationId , Principal principal){
-        System.out.println(principal.getName());
-        System.out.println(chatMessage.getText());
         rabbitTemplate.convertAndSend(
                 RabbitMQConfig.EXCHANGE,
                 RabbitMQConfig.ROUTING_KEY,
