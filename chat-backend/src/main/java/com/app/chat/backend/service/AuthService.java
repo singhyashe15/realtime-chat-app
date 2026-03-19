@@ -89,7 +89,6 @@ public class AuthService {
 
     public boolean doOtpValidate(OtpDTO otp) {
         OtpDTO fetchOtp = redisService.fetchOtp("otp::" + otp.getEmailId(), OtpDTO.class);
-        System.out.println(fetchOtp.getCode());
         if(fetchOtp != null && fetchOtp.getCode().equals(otp.getCode())){
             UserRequestDTO user = redisService.getUserData("user::" + otp.getEmailId() , UserRequestDTO.class);
             User signedUser = new User(user.getName(),user.getUserName(),user.getEmailId(),user.getPassword());

@@ -6,9 +6,11 @@ import brevoModel.SendSmtpEmail;
 import brevoModel.SendSmtpEmailSender;
 import brevoModel.SendSmtpEmailTo;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 
+@Service
 public class MailHandler {
     private final TransactionalEmailsApi emailsApi;
 
