@@ -64,7 +64,8 @@ const Register = () => {
 
     if (userName.length > 0) {
       const res = await axios.get(`${serverUrl}/api/user/validate-username?userName=${userName}`);
-      if (res.data === false) {
+      
+      if (res.data === true) {
         setShowError(true);
         setClient((prev) => {
           return {
@@ -92,16 +93,16 @@ const Register = () => {
       <Box width={['90%', '70%', '30%']} bg="slate.500" color="black" textAlign="center">
         <form onSubmit={handleSubmit}>
           <FormControl p="8">
-            <Input name='name' placeholder='Name' my="4" onChange={handlechange} border="1px solid blue" />
+            <Input name='name' placeholder='Name' my="4" value={client.name}  onChange={handlechange} border="1px solid blue" />
             <InputGroup my="4"  >
               <InputRightElement cursor="pointer">
                 <Mail />
               </InputRightElement>
-              <Input type='email' name='emailId' id="emailId" placeholder='Email' onChange={handlechange} border="1px solid blue" />
+              <Input type='email' name='emailId' id="emailId" placeholder='Email' value={client.emailId}  onChange={handlechange} border="1px solid blue" />
             </InputGroup>
             <InputGroup>
               <InputRightElement cursor="pointer"><User /></InputRightElement>
-              <Input type='name' name="userName" placeholder='Enter Username' onChange={handlechange} border="1px solid blue" />
+              <Input type='name' name="userName" placeholder='Enter Username' value={client.userName}  onChange={handlechange} border="1px solid blue" />
             </InputGroup>
             {
               showError &&
@@ -113,7 +114,7 @@ const Register = () => {
                   hide?.pass ? <Eye /> : <EyeClosed />
                 }
               </InputRightElement>
-              <Input type={hide.pass ? 'text' : 'password'} name='password' id="password" placeholder='Password' onChange={handlechange} border="1px solid blue" />
+              <Input type={hide.pass ? 'text' : 'password'} name='password' id="password" placeholder='Password' value={client.password}  onChange={handlechange} border="1px solid blue" />
             </InputGroup>
             <InputGroup my="4">
               <InputRightElement cursor="pointer" onClick={() => toggle('cpass')}>
