@@ -7,11 +7,12 @@ import Home from '../pages/home.jsx';
 import MessagePage from '../components/messagePage.jsx';
 import App from '../App.jsx';
 import GroupMessagePage from '../components/groupMessagePage.jsx';
+import ProtectedRoute from '../api/ProtectRoute.jsx';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
+    element:<App />,
     children: [
       {
         path: 'register',
@@ -31,7 +32,7 @@ const router = createBrowserRouter([
       },
       {    
             path : "",
-            element :<Home/>,
+            element :<ProtectedRoute><Home/></ProtectedRoute>,
             children : [
                 {
                   path : ':opponentId',
