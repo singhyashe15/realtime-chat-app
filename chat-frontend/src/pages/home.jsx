@@ -1,11 +1,11 @@
-import { Grid, GridItem, Box, Flex, Image, Text } from "@chakra-ui/react";
+import { Grid, GridItem, Box, Flex, Image, Text, Avatar } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import Sidebar from "../components/sidebar";
+import { ChartArea } from "lucide-react";
 
 const Home = () => {
   const location = useLocation();
-
   const basePath = location.pathname === "/";
 
   return (
@@ -23,21 +23,24 @@ const Home = () => {
       </GridItem>
 
       {/* Message / Outlet */}
-      
+
       <GridItem display={basePath ? "none" : "flex"}>
-        <Outlet/>
+        <Outlet />
       </GridItem>
 
       {/* Empty state / Welcome */}
-      {/* <Flex
-        display={{ base: "none", lg: basePath ? "none" : "flex" }}
+      {/* <GridItem display={{ base: "none", lg: basePath ? "none" : "flex" }}>
+
+      </GridItem> */}
+      <Flex
+        display={{ base: "none", lg: basePath ? "flex" : "none" }}
         w="100%"
         align="center"
         justify="center"
         direction="column"
         gap={2}
       >
-        <Image  width="250px" alt="logo" />
+        <Avatar src={ChartArea} width="100px" height="100px" alt="logo" />
         <Text
           fontSize="xl"
           fontStyle="italic"
@@ -45,8 +48,17 @@ const Home = () => {
           mt={2}
           color="gray.500"
         >
+          Welcome to Real Time Messaging System
         </Text>
-      </Flex> */}
+        <Text
+          fontSize="xl"
+          fontStyle="italic"
+          fontWeight="semibold"
+          mt={2}
+          color="gray.500">
+          Chat now with your partners
+        </Text>
+      </Flex>
     </Grid>
   )
 }
