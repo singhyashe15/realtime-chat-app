@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.POST, "/api/user/signup","/api/user/login").permitAll()
-                        .requestMatchers(HttpMethod.GET,  "/api/user/validate-username").permitAll()
+                        .requestMatchers(HttpMethod.GET,  "/api/user/validate-username", "/api/protect-route").permitAll()
                         .anyRequest().authenticated()
                 ).formLogin(AbstractHttpConfigurer::disable)
                 .addFilterBefore(authFilter,UsernamePasswordAuthenticationFilter.class);

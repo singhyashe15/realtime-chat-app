@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/")
 public class ProtectRouteController {
-    @GetMapping("/protect-route")
+    @GetMapping("protect-route")
     public ResponseEntity<?> doAuth(HttpServletRequest request) {
-        System.out.println(request.getCookies());
+
         if (request.getCookies() != null) {
             for (Cookie cookie : request.getCookies()) {
                 if ("jwt".equals(cookie.getName())) {
