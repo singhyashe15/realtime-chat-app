@@ -29,8 +29,6 @@ export default function MessagePage() {
         `/api/conversation?senderId=${userInfo.id}&receiverId=${opponentId}`,
         { withCredentials: true }
       );
-      console.log(res);
-
       setSocketMessage(() => res.data);
     };
 
@@ -115,14 +113,14 @@ export default function MessagePage() {
   const handleUploadImage = async (e) => {
     const file = e.target.files[0];
     const res = await uploadFile(file, "image");
-
     setMessageInfo((prev) => {
       return {
         ...prev,
         imageUrl: res.data.url,
       }
     })
-
+    console.log(messageInfo);
+    
     client.publish({
       destination: `/app/private/chat.${opponentId}`,
       body: JSON.stringify(messageInfo)
@@ -205,9 +203,9 @@ export default function MessagePage() {
         </Button>
 
         <Flex align="center" gap={3}>
-          <Avatar size="sm" name={participant?.name} cursor="pointer" onClick={onOpen} />
+          <Avatar size="sm" name={participant[0]?.name} cursor="pointer" onClick={onOpen} />
           <Box>
-            <Text fontWeight="medium" color="white">{participant?.name}</Text>
+            <Text fontWeight="medium" color="white">{participant[0]?.name}</Text>
             <Text fontSize="xs" color="gray.400">
               Online
             </Text>
@@ -219,8 +217,8 @@ export default function MessagePage() {
             <ModalCloseButton />
             <ModalBody >
               <Flex justify="center" align="center" direction="column" mt="2" className="scroll">
-                <Avatar size="md" name={participant?.name} cursor="pointer" />
-                <Text fontWeight="medium" fontSize="lg" color="white" mt="1">{participant?.name}</Text>
+                <Avatar size="md" name={participant[0]?.name} cursor="pointer" />
+                <Text fontWeight="medium" fontSize="lg" color="white" mt="1">{participant[0]?.name}</Text>
                 <Divider mt="4" />
                 <Tabs isFitted variant="soft-rounded" mt="2" w="100%" >
                   <TabList mb="2em" mx="xl" w="100%" >

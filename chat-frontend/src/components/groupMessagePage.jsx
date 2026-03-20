@@ -20,7 +20,6 @@ export default function GroupMessagePage() {
   const dispatch = useDispatch();
   const groups = useSelector((state) => state.chat.groupDetails);
   const group = groups?.find(group => group.id === Number(groupId));
-
   const navigate = useNavigate();
   const client = getClient();
 
@@ -48,7 +47,7 @@ export default function GroupMessagePage() {
           console.log("Updated:", updated);
           return updated;
         });
-        console.log(socketMessage);
+        
       }
       );
       // cleanup unsubscribe

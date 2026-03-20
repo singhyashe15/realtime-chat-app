@@ -9,10 +9,11 @@ const ProtectedRoute = ({ children }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        await api.get("/api/v1/protect-route");
+        await api.get("/api/protect-route",{
+          withCredentials: true
+        });
         setIsAuth(true);
       } catch (err) {
-        console.log(err);
         setIsAuth(false);
       }
     };
